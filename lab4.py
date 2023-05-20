@@ -167,3 +167,5 @@ def destroy_bucket(bucket_name):
     s3_client = boto3.client('s3')
     response = s3_client.delete_bucket(Bucket=bucket_name)
     print(response)
+
+read_csv_from_bucket('oliferchuk-lab2', 'data.csv')
