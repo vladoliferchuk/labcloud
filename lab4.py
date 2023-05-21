@@ -24,16 +24,19 @@ def create_instance():
     )
     print(instances["Instances"][0]["InstanceId"])
 
-
 def get_public_ip(instance_id):
     ec2_client = boto3.client("ec2", region_name="us-east-1")
-    ip = []
     reservations = ec2_client.describe_instances(InstanceIds=[instance_id]).get("Reservations")
+
     for reservation in reservations:
         for instance in reservation['Instances']:
-            ip.append(instance.get("PublicIpAddress"))
-    return ip
+            print(instance.get("PublicIpAddress"))
+            return(instance.get("PublicIpAddress"))
+            
 
+
+tmp = get_public_ip('i-01e3e771ae20a3090')
+print(f"command ssh: ssh -i ec2-key-pair.pem ubuntu@ec2-{tmp}.compute-1.amazonaws.com")
 
 def get_running_instances():
     ec2_client = boto3.client("ec2", region_name="us-east-1")
@@ -56,9 +59,7 @@ def get_running_instances():
             print(f"{instance_id}, {instance_type}, {public_ip}, {private_ip}")
 
 
-def ssh():
-    tmp = get_public_ip("i-065aa9c120886c977")
-    print(f"command ssh: ssh -i aws_ec2_key.pem ec2-user@{tmp[0]}")
+
 
 
 def stop_instance(instance_id):
